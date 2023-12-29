@@ -45,10 +45,9 @@ final class JarFileResourceLoader implements AutoCloseable {
             return null;
         }
         final long size = entry.getSize();
-        try (final InputStream is = jarFile.getInputStream(entry)) {
+        try (final InputStream is = jarFile.getInputStream(entry);
+             ByteArrayOutputStream baos = new ByteArrayOutputStream();) {
             if (size == -1) {
-                // size unknown
-                final ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 final byte[] buf = new byte[16384];
                 int res;
                 while ((res = is.read(buf)) > 0) {
@@ -56,8 +55,6 @@ final class JarFileResourceLoader implements AutoCloseable {
                 }
                 // done
                 CodeSource codeSource = createCodeSource(entry);
-                baos.close();
-                is.close();
                 spec.setBytes(baos.toByteArray());
                 spec.setCodeSource(codeSource);
                 return spec;
@@ -70,11 +67,9 @@ final class JarFileResourceLoader implements AutoCloseable {
                 }
                 // consume remainder so that cert check doesn't fail in case of wonky JARs
                 while (is.read() != -1) {
-                    //
                 }
                 // done
                 CodeSource codeSource = createCodeSource(entry);
-                is.close();
                 spec.setBytes(bytes);
                 spec.setCodeSource(codeSource);
                 return spec;
@@ -112,7 +107,6 @@ final class JarFileResourceLoader implements AutoCloseable {
         try {
             jarFile.close();
         } catch (IOException e) {
-            // ignored
         }
     }
 

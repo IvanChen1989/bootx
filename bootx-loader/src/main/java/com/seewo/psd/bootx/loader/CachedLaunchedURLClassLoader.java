@@ -3,6 +3,7 @@ package com.seewo.psd.bootx.loader;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.Optional;
@@ -19,6 +20,10 @@ public class CachedLaunchedURLClassLoader extends JarIndexLaunchedURLClassLoader
 
     public CachedLaunchedURLClassLoader(URL[] urls, ClassLoader parent) {
         super(urls, parent);
+        if(urls != null){
+            System.out.println("urls: ");
+            Arrays.stream(urls).forEach(System.out::println);
+        }
         System.out.println("in CachedLaunchedURLClassLoader");
     }
 

@@ -15,9 +15,9 @@ public class IndexParser {
     public static final String JAR_INDEX_VERSION_KEY = "JarIndex-Version: ";
 
     public static Map<String, Set<String>> indexListParser(File indexFile) throws IOException {
-
         System.out.println("parseindex" + indexFile.getAbsolutePath());
         if (!indexFile.exists()) {
+            System.out.println("can not find index file" + indexFile.getAbsolutePath());
             return null;
         }
         LinkedHashMap<String, Set<String>> prefixes = new LinkedHashMap<>();
@@ -30,7 +30,7 @@ public class IndexParser {
 
             String versionNumber = line.substring(JAR_INDEX_VERSION_KEY.length());
             if (!JAR_INDEX_VERSION.equals(versionNumber)) {
-                return null;
+                return prefixes;
             }
 
             // Blank line must be next
@@ -58,6 +58,7 @@ public class IndexParser {
                     break;
             }
         }
+        System.out.println("index size " + prefixes.size());
         return prefixes;
     }
 }

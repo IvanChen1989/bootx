@@ -23,7 +23,7 @@ public class MyLayoutFactory implements LayoutFactory {
     }
 
 
-    public static class Jar implements RepackagingLayout, CustomLoaderLayout {
+    public static class Jar extends org.springframework.boot.loader.tools.Layouts.Jar implements CustomLoaderLayout {
         @Override
         public void writeLoadedClasses(LoaderClassesWriter writer) throws IOException {
             writer.writeLoaderClasses(NESTED_LOADER_JAR);
@@ -35,42 +35,5 @@ public class MyLayoutFactory implements LayoutFactory {
             System.out.println(">>>>>> getLauncherClassName()");
             return "com.seewo.psd.bootx.loader.JarLauncher";
         }
-
-        @Override
-        public String getLibraryLocation(String libraryName, LibraryScope scope) {
-            return "BOOT-INF/lib/";
-        }
-
-        @Deprecated
-        @Override
-        public String getLibraryDestination(String libraryName, LibraryScope scope) {
-            return "BOOT-INF/lib/";
-        }
-
-        @Override
-        public String getClassesLocation() {
-            return "";
-        }
-
-        @Override
-        public String getRepackagedClassesLocation() {
-            return "BOOT-INF/classes/";
-        }
-
-        @Override
-        public String getClasspathIndexFileLocation() {
-            return "BOOT-INF/classpath.idx";
-        }
-
-        @Override
-        public String getLayersIndexFileLocation() {
-            return "BOOT-INF/layers.idx";
-        }
-
-        @Override
-        public boolean isExecutable() {
-            return true;
-        }
-
     }
 }
